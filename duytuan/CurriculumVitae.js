@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Personal from './Personal'
 
 class CurriculumVitae extends React.Component {

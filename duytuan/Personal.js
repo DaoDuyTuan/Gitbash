@@ -12,9 +12,11 @@ class Personal extends React.Component {
             workPlace: '',
             phoneNumber: '',
             email: '',
-            isError : false
+            isCheckValidate: false,
+            isShowTable: false
         };
 
+        this.checkValidateState = true;
         this.personalList = new Map();
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
@@ -26,33 +28,42 @@ class Personal extends React.Component {
         const name = target.name;
 
         this.setState({
-            [name] : value
+            [name]: value
         });
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        this.setState({isError: true});
 
-        this.personalList.set(this.state.phoneNumber,this.state);
+        this.checkValidateState = true;
+        this.setState({isCheckValidate: true});
+
+        this.personalList.set(this.state.phoneNumber, this.state);
+    }
+
+    handleShowTable(event) {
+        event.preventDefault();
+        this.setState(prevState => ({
+            isShowTable: !prevState.isShowTable
+        }));
     }
 
     render() {
         let validate = null;
-        if(this.state.isError){
+        if (this.state.isCheckValidate && this.checkValidateState) {
             validate = <CheckValidation fullName={this.state.fullName}
                                         Gender={this.state.Gender}
                                         Age={this.state.Age}
                                         DOB={this.state.DOB}
                                         workPlace={this.state.workPlace}
                                         phoneNumber={this.state.phoneNumber}
-                                        email={this.state.email} />;
-            this.state.isError = false;
+                                        email={this.state.email}/>;
+            this.checkValidateState = false;
         }
 
         return (
             <section>
-            {validate}
+                {validate}
                 <header><h4>I.PERSIONAL INFORMATION</h4></header>
                 <article>
                     <form onSubmit={this.handleSubmit}>
