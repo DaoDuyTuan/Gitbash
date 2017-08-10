@@ -1,5 +1,5 @@
 import React from 'react';
-import CheckValidation from './CheckValidation';
+import Validation from './CheckValidation';
 import Table from './Showtable'
 
 class Personal extends React.Component {
@@ -14,7 +14,6 @@ class Personal extends React.Component {
             workPlace: '',
             phoneNumber: '',
             email: '',
-            isCheckValidate: false,
             isShowTable: false
         };
 
@@ -34,27 +33,30 @@ class Personal extends React.Component {
         this.setState({
             [name]: value,
         });
-
     }
 
     handleRadio(event) {
         this.setState((prevState) => ({isGender: !prevState.isGender}))
-
     }
 
     handleSubmit(event) {
         event.preventDefault();
-
+        console.log('');
         this.checkValidateState = true;
         this.setState({isCheckValidate: true});
 
-        this.personalList.set(this.state.phoneNumber, this.state);
+        if (!(this.state.fullName.trim === '' || this.state.Gender === '' ||
+                this.state.isGender === '' || this.state.DOB === '' ||
+                this.state.phoneNumber === '' || this.state.workPlace === '' ||
+                this.state.email === '')) {
+
+            this.personalList.set(this.state.phoneNumber, this.state);
+        }
     }
 
     handleShowTable(event) {
         event.preventDefault();
         this.arrPersonal = [];
-
         this.setState(prevState => ({
             isShowTable: !prevState.isShowTable
         }));
@@ -64,19 +66,18 @@ class Personal extends React.Component {
         });
 
         this.arrPersonal.sort((a, b) => a.Age - b.Age);
-
     }
 
     render() {
         let validate = null;
         if (this.state.isCheckValidate && this.checkValidateState) {
-            validate = <CheckValidation fullName={this.state.fullName}
-                                        Gender={this.state.Gender}
-                                        Age={this.state.Age}
-                                        DOB={this.state.DOB}
-                                        workPlace={this.state.workPlace}
-                                        phoneNumber={this.state.phoneNumber}
-                                        email={this.state.email}/>;
+            validate = <Validation fullName={this.state.fullName}
+                                   Gender={this.state.Gender}
+                                   Age={this.state.Age}
+                                   DOB={this.state.DOB}
+                                   workPlace={this.state.workPlace}
+                                   phoneNumber={this.state.phoneNumber}
+                                   email={this.state.email}/>;
             this.checkValidateState = false;
         }
 
@@ -166,7 +167,6 @@ class Personal extends React.Component {
                 <br/>
                 <Table personal={this.arrPersonal} showInfo={this.state.isShowTable}/>
             </section>
-
         )
     }
 }

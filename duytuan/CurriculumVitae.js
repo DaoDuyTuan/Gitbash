@@ -8,10 +8,6 @@ class CurriculumVitae extends React.Component {
                 <div className="game-board">
                     <Personal/>
                 </div>
-                <div className="game-ifo">
-                    <div>{/* status */}</div>
-                    <ol></ol>
-                </div>
             </div>
         )
     }

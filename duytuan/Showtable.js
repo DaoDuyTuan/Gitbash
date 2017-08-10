@@ -12,6 +12,7 @@ class Table extends React.Component {
                 <td>{item.workPlace}</td>
             </tr>
         );
+
         if (this.props.showInfo) {
             table =
                 <table className="tableInfo">
