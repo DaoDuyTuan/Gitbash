@@ -1,5 +1,6 @@
 import React from 'react';
 import CheckValidation from './CheckValidation';
+import Table from './Showtable'
 
 class Personal extends React.Component {
     constructor(props) {
@@ -7,6 +8,7 @@ class Personal extends React.Component {
         this.state = {
             fullName: '',
             Gender: 'Male',
+            isGender: true,
             Age: '',
             DOB: '',
             workPlace: '',
@@ -18,8 +20,10 @@ class Personal extends React.Component {
 
         this.checkValidateState = true;
         this.personalList = new Map();
+        this.arrPersonal = [];
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleShowTable = this.handleShowTable.bind(this);
     }
 
     handleUpdate(event) {
@@ -28,8 +32,14 @@ class Personal extends React.Component {
         const name = target.name;
 
         this.setState({
-            [name]: value
+            [name]: value,
         });
+
+    }
+
+    handleRadio(event) {
+        this.setState((prevState) => ({isGender: !prevState.isGender}))
+
     }
 
     handleSubmit(event) {
@@ -43,9 +53,18 @@ class Personal extends React.Component {
 
     handleShowTable(event) {
         event.preventDefault();
+        this.arrPersonal = [];
+
         this.setState(prevState => ({
             isShowTable: !prevState.isShowTable
         }));
+
+        this.personalList.forEach((val, key) => {
+            this.arrPersonal.push(val)
+        });
+
+        this.arrPersonal.sort((a, b) => a.Age - b.Age);
+
     }
 
     render() {
@@ -67,57 +86,87 @@ class Personal extends React.Component {
                 <header><h4>I.PERSIONAL INFORMATION</h4></header>
                 <article>
                     <form onSubmit={this.handleSubmit}>
-                        <p>
-                            <label>
-                                Full name :
-                                <input type="text" name="fullName" value={this.state.fullName}
-                                       onChange={this.handleUpdate}/>
-                            </label>
-                            <label>
-                                Gender :
-                                <input type="radio" id="male" name="Gender" value="nam"/> Male
-                                <input type="radio" id="female" name="Gender" value="nu"/> Female
-                            </label>
-                        </p>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>Full name :</td>
+                                <td>
+                                    <input type="text" name="fullName" value={this.state.fullName}
+                                           onChange={this.handleUpdate}/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Gender:</td>
+                                <td>
+                                    <input type="radio" id="male" name="Gender"
+                                           value="nam"/> Male
+                                    <input type="radio" id="female" name="Gender"
+                                           value="nu"/> Female
+                                </td>
+                            </tr>
 
-                        <p>
-                            <label>
-                                Age : <input type="text" name="Age" value={this.state.Age}
-                                             onChange={this.handleUpdate}/>
-                            </label>
-                        </p>
+                            <tr>
+                                <td>Age :</td>
+                                <td>
+                                    <input type="text" name="Age" value={this.state.Age}
+                                           onChange={this.handleUpdate}/>
+                                </td>
+                            </tr>
 
-                        <p>
-                            <label>
-                                Date of birth : <input type="text" name="DOB" placeholder="mm/dd/yyyy"
-                                                       value={this.state.DOB} onChange={this.handleUpdate}/>
-                            </label>
-                        </p>
+                            <tr>
 
-                        <p>
-                            <label>
-                                Work place : <input type="text" name="workPlace" value={this.state.workPlace}
-                                                    onChange={this.handleUpdate}/>
-                            </label>
-                        </p>
+                                <td>Date of birth :</td>
+                                <td>
+                                    <input type="text" name="DOB" placeholder="mm/dd/yyyy"
+                                           value={this.state.DOB} onChange={this.handleUpdate}/>
+                                </td>
 
-                        <p>
-                            <label>
-                                Phone number : <input type="text" name="phoneNumber" value={this.state.phoneNumber}
-                                                      onChange={this.handleUpdate}/>
-                            </label>
-                        </p>
+                            </tr>
 
-                        <p>
-                            <label>
-                                Email : <input type="email" name="email" placeholder="example@gmail.com"
-                                               value={this.state.email} onChange={this.handleUpdate}/>
-                            </label>
-                        </p>
-                        <input type="submit" value="Submit"/>
+                            <tr>
+
+                                <td>Work place :</td>
+                                <td>
+                                    <input type="text" name="workPlace" value={this.state.workPlace}
+                                           onChange={this.handleUpdate}/>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Phone number:</td>
+                                <td>
+                                    <input type="text" name="phoneNumber" value={this.state.phoneNumber}
+                                           onChange={this.handleUpdate}/>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Email :</td>
+                                <td>
+                                    <input type="email" name="email" placeholder="example@gmail.com"
+                                           value={this.state.email} onChange={this.handleUpdate}/>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td><input type="submit" value="Submit"/>
+                                    <input type="button" value="Show" onClick={this.handleShowTable}/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </form>
                 </article>
+                <br/>
+                <br/>
+                <Table personal={this.arrPersonal} showInfo={this.state.isShowTable}/>
             </section>
+
         )
     }
 }
