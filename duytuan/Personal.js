@@ -41,7 +41,7 @@ class Personal extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log('');
+
         this.checkValidateState = true;
         this.setState({isCheckValidate: true});
 
@@ -69,15 +69,10 @@ class Personal extends React.Component {
     }
 
     render() {
+
         let validate = null;
         if (this.state.isCheckValidate && this.checkValidateState) {
-            validate = <Validation fullName={this.state.fullName}
-                                   Gender={this.state.Gender}
-                                   Age={this.state.Age}
-                                   DOB={this.state.DOB}
-                                   workPlace={this.state.workPlace}
-                                   phoneNumber={this.state.phoneNumber}
-                                   email={this.state.email}/>;
+            validate = <Validation arrObj={this.state} />;
             this.checkValidateState = false;
         }
 
@@ -92,16 +87,16 @@ class Personal extends React.Component {
                             <tr>
                                 <td>Full name :</td>
                                 <td>
-                                    <input type="text" name="fullName" value={this.state.fullName}
+                                    <input type="text" name="fullName" ref="fullName" value={this.state.fullName}
                                            onChange={this.handleUpdate}/>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Gender:</td>
                                 <td>
-                                    <input type="radio" id="male" name="Gender"
+                                    <input type="radio" name="Gender"
                                            value="nam"/> Male
-                                    <input type="radio" id="female" name="Gender"
+                                    <input type="radio" name="Gender"
                                            value="nu"/> Female
                                 </td>
                             </tr>
