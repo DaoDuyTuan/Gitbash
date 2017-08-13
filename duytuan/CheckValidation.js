@@ -1,17 +1,22 @@
-function Validation (props){
-    debugger;
-    // for (let index in props.arrObj) {
-    //     if (props.arrObj[index] === '') {
-    //         alert(`${props.arrObj[index]} is empty`);
-    //         return false;
-    //     }
-    // }
-    Object.keys(props.arrsObj).forEach((key, index) => {
-        if (props.arrObj[key] === '') {
-            alert(key + 'is empty');
-            throw {};
+import React from 'react';
+import PropTypes from 'prop-types';
+
+class Validation extends React.Component{
+    render() {
+        for (let ind in this.props.arrObj) {
+            if (this.props.arrObj[ind] === '') {
+                alert(ind + " is empty");
+                return false;
+            }
         }
-    });
+    }
 }
+
+function showError(props) {
+
+}
+Validation.propTypes = {
+    arrObj : PropTypes.object
+};
 
 export default Validation;

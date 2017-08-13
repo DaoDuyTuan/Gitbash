@@ -1,5 +1,4 @@
 import React from 'react';
-import Validation from './CheckValidation';
 import Table from './Showtable'
 
 class Personal extends React.Component {
@@ -23,6 +22,7 @@ class Personal extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleShowTable = this.handleShowTable.bind(this);
+        this.showError = null;
     }
 
     handleUpdate(event) {
@@ -42,8 +42,18 @@ class Personal extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
+        for (let ind in this.state) {
+            if (this.state[ind] === '') {
+                alert(ind + " is empty");
+                this.showError = (<span>{ind} is empty!!</span>);
+                this.setState({});
+
+                this.refs[ind].focus();
+                return false;
+            }
+        }
+
         this.checkValidateState = true;
-        this.setState({isCheckValidate: true});
 
         if (!(this.state.fullName.trim === '' || this.state.Gender === '' ||
                 this.state.isGender === '' || this.state.DOB === '' ||
@@ -69,16 +79,8 @@ class Personal extends React.Component {
     }
 
     render() {
-
-        let validate = null;
-        if (this.state.isCheckValidate && this.checkValidateState) {
-            validate = <Validation arrObj={this.state} />;
-            this.checkValidateState = false;
-        }
-
         return (
             <section>
-                {validate}
                 <header><h4>I.PERSIONAL INFORMATION</h4></header>
                 <article>
                     <form onSubmit={this.handleSubmit}>
@@ -89,6 +91,7 @@ class Personal extends React.Component {
                                 <td>
                                     <input type="text" name="fullName" ref="fullName" value={this.state.fullName}
                                            onChange={this.handleUpdate}/>
+                                    {this.showError}
                                 </td>
                             </tr>
                             <tr>
@@ -104,7 +107,7 @@ class Personal extends React.Component {
                             <tr>
                                 <td>Age :</td>
                                 <td>
-                                    <input type="text" name="Age" value={this.state.Age}
+                                    <input type="text" name="Age" ref="Age" value={this.state.Age}
                                            onChange={this.handleUpdate}/>
                                 </td>
                             </tr>
@@ -113,7 +116,7 @@ class Personal extends React.Component {
 
                                 <td>Date of birth :</td>
                                 <td>
-                                    <input type="text" name="DOB" placeholder="mm/dd/yyyy"
+                                    <input type="text" name="DOB" ref="DOB" placeholder="mm/dd/yyyy"
                                            value={this.state.DOB} onChange={this.handleUpdate}/>
                                 </td>
 
@@ -123,7 +126,7 @@ class Personal extends React.Component {
 
                                 <td>Work place :</td>
                                 <td>
-                                    <input type="text" name="workPlace" value={this.state.workPlace}
+                                    <input type="text" name="workPlace" ref="workPlace" value={this.state.workPlace}
                                            onChange={this.handleUpdate}/>
                                 </td>
 
@@ -133,7 +136,8 @@ class Personal extends React.Component {
 
                                 <td>Phone number:</td>
                                 <td>
-                                    <input type="text" name="phoneNumber" value={this.state.phoneNumber}
+                                    <input type="text" name="phoneNumber" ref="phoneNumber"
+                                           value={this.state.phoneNumber}
                                            onChange={this.handleUpdate}/>
                                 </td>
 
@@ -143,7 +147,7 @@ class Personal extends React.Component {
 
                                 <td>Email :</td>
                                 <td>
-                                    <input type="email" name="email" placeholder="example@gmail.com"
+                                    <input type="email" name="email" ref="email" placeholder="example@gmail.com"
                                            value={this.state.email} onChange={this.handleUpdate}/>
                                 </td>
 
