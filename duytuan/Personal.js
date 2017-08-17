@@ -62,7 +62,7 @@ class Personal extends React.Component {
 
     }
 
-    handleShowTable(event) {
+    handleAddPerson(event) {
         event.preventDefault();
         this.arrPersonal = [];
 
@@ -90,12 +90,22 @@ class Personal extends React.Component {
     }
 
     editPerson(phoneNumber) {
+        const personal = this.personalList.get(phoneNumber);
+        this.setState({
+            fullName: personal.fullName,
+            Gender: personal.Gender,
+            Age: personal.Age,
+            DOB: personal.DOB,
+            workPlace: personal.workPlace,
+            phoneNumber: personal.phoneNumber,
+            email: personal.email
+        });
+    }
+
+    handleEditTable() {
 
     }
 
-    handleEditTable(){
-
-    }
     render() {
         return (
             <section>
@@ -174,7 +184,7 @@ class Personal extends React.Component {
                             <tr>
                                 <td>
                                     <input type="submit" value="Submit"/>
-                                    <input type="button" value="Show" onClick={this.handleShowTable.bind(this)}/>
+                                    <input type="button" value="Show" onClick={this.handleAddPerson.bind(this)}/>
                                     <input type="button" value="Update" onClick={this.handleEditTable.bind(this)}/>
                                 </td>
                             </tr>
