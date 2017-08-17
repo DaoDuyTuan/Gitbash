@@ -1,22 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
-class Validation extends React.Component{
-    render() {
-        for (let ind in this.props.arrObj) {
-            if (this.props.arrObj[ind] === '') {
-                alert(ind + " is empty");
-                return false;
-            }
+function Validation (props){
+    
+    for (let i in props.arrObj) {
+        if (props.arrObj[i] === '') {
+            alert(`${i} is empty`);
+            return false;
         }
     }
+    
+    // Object.keys(props.arrObj).forEach((key, i) => {
+    //     if (props.arrObj[key] === '') {
+    //
+    //         throw alert(key + 'is empty');
+    //     }
+    // });
 }
-
-function showError(props) {
-
-}
-Validation.propTypes = {
-    arrObj : PropTypes.object
-};
 
 export default Validation;
