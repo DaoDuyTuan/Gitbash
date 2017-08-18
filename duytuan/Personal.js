@@ -1,10 +1,19 @@
 import React from 'react';
+import Error from './Error';
 import Table from './Showtable'
 
 class Personal extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = this.getInitialState();
+        this.showError = null;
+        this.personalList = new Map();
+        this.arrPersonal = [];
+        this.isShowTable = false;
+    }
+
+    getInitialState = () => {
+        return {
             fullName: '',
             Gender: '',
             Age: '',
@@ -12,13 +21,9 @@ class Personal extends React.Component {
             workPlace: '',
             phoneNumber: '',
             email: '',
-            isShowTable: false
+            isEdit: false
         };
-
-        this.personalList = new Map();
-        this.arrPersonal = [];
-        this.showError = null;
-    }
+    };
 
     handleUpdate(event) {
         const target = event.target;
@@ -26,22 +31,22 @@ class Personal extends React.Component {
         this.setState({
             [target.name]: target.value,
         });
-
     }
 
     handleSubmit(event) {
+        debugger;
         event.preventDefault();
         this.setState({});
         this.showError = '';
 
         for (let ind in this.state) {
-            if ((typeof this.state[ind] !== 'boolean' && this.state[ind].trim() === '') ||
+            if ((typeof this.state[ind] === 'string' && this.state[ind].trim() === '') ||
                 (ind === 'Age' && isNaN(this.state[ind]))) {
 
-                this.showError = (<span className="error">{ind} is empty!!</span>);
+                this.showError = <Error errorName={`${ind} is empty`}/>
 
                 if (ind === "Age" && isNaN(this.state[ind])) {
-                    this.showError = (<span className="error">{ind} is not number!!</span>)
+                    this.showError = <Error errorName={`${ind} is not number!!`}/>
                 }
 
                 if (ind !== "Gender") {
@@ -53,22 +58,29 @@ class Personal extends React.Component {
             }
         }
 
-        if (this.showError === '' && !this.personalList.has(this.state.phoneNumber)) {
-            this.personalList.set(this.state.phoneNumber, this.state);
-            this.showError = (<span className="error">Add successful !!!</span>);
-        } else {
-            this.showError = (<span className="error">phoneNumber is not exist!!!</span>);
-        }
+        if (this.showError === '') {
+            if (this.state.isEdit) {
+                this.personalList.set(this.state.phoneNumber, this.state);
+                this.showError = <Error errorName={"Update successful !"}/>;
 
+                this.setState(this.getInitialState());
+            } else {
+                if (this.personalList.has(this.state.phoneNumber)) {
+                    this.showError = <Error errorName={"this person is existed.Please enter again !!!"}/>;
+                } else {
+                    this.personalList.set(this.state.phoneNumber, this.state);
+                    this.showError = <Error errorName={"Add Successful!!!"}/>;
+                    this.setState(this.getInitialState());
+                }
+            }
+        }
     }
 
-    handleAddPerson(event) {
+    addPerson(event) {
         event.preventDefault();
+        this.setState({});
         this.arrPersonal = [];
-
-        this.setState(prevState => ({
-            isShowTable: !prevState.isShowTable
-        }));
+        this.isShowTable = true;
 
         this.personalList.forEach((val, key) => {
             this.arrPersonal.push(val)
@@ -98,12 +110,9 @@ class Personal extends React.Component {
             DOB: personal.DOB,
             workPlace: personal.workPlace,
             phoneNumber: personal.phoneNumber,
-            email: personal.email
+            email: personal.email,
+            isEdit: true
         });
-    }
-
-    handleEditTable() {
-
     }
 
     render() {
@@ -184,8 +193,7 @@ class Personal extends React.Component {
                             <tr>
                                 <td>
                                     <input type="submit" value="Submit"/>
-                                    <input type="button" value="Show" onClick={this.handleAddPerson.bind(this)}/>
-                                    <input type="button" value="Update" onClick={this.handleEditTable.bind(this)}/>
+                                    <input type="button" value="Update" onClick={this.addPerson.bind(this)}/>
                                 </td>
                             </tr>
                             </tbody>
@@ -194,7 +202,8 @@ class Personal extends React.Component {
                 </article>
                 <br/>
                 <br/>
-                <Table personal={this.arrPersonal} showInfo={this.state.isShowTable}
+                {console.log(1234)}
+                <Table personal={this.arrPersonal} showInfo={this.isShowTable}
                        delPerson={this.delPerson.bind(this)} editPerson={this.editPerson.bind(this)}/>
             </section>
         )
