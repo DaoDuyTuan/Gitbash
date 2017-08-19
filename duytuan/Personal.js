@@ -6,9 +6,7 @@ class Personal extends React.Component {
     constructor(props) {
         super(props);
         this.state = this.getInitialState();
-        this.showError = null;
         this.personalList = new Map();
-        this.arrPersonal = [];
         this.isShowTable = false;
     }
 
@@ -21,12 +19,15 @@ class Personal extends React.Component {
             workPlace: '',
             phoneNumber: '',
             email: '',
-            isEdit: false
+            isEdit: false,
+            showError: null,
+            arrPersonal:[]
         };
     };
 
     handleUpdate(event) {
         const target = event.target;
+        this.setState({showError: null});
 
         this.setState({
             [target.name]: target.value,
@@ -34,63 +35,66 @@ class Personal extends React.Component {
     }
 
     handleSubmit(event) {
-        debugger;
         event.preventDefault();
         this.setState({});
-        this.showError = '';
+        let showError = '';
 
         for (let ind in this.state) {
             if ((typeof this.state[ind] === 'string' && this.state[ind].trim() === '') ||
                 (ind === 'Age' && isNaN(this.state[ind]))) {
 
-                this.showError = <Error errorName={`${ind} is empty`}/>
+                showError = <Error errorName={`${ind} is empty`}/>
 
                 if (ind === "Age" && isNaN(this.state[ind])) {
-                    this.showError = <Error errorName={`${ind} is not number!!`}/>
+                    showError = <Error errorName={`${ind} is not number!!`}/>
                 }
 
                 if (ind !== "Gender") {
                     this.refs[ind].focus();
                 }
-
-                this.setState({});
+                this.setState({showError: showError});
                 return false;
             }
         }
 
-        if (this.showError === '') {
+        if (showError === '') {
             if (this.state.isEdit) {
                 this.personalList.set(this.state.phoneNumber, this.state);
-                this.showError = <Error errorName={"Update successful !"}/>;
+                showError= <Error errorName={"Update successful !"}/>;
+                this.addPerson();
 
-                this.setState(this.getInitialState());
+                this.setState({showError: showError});
             } else {
                 if (this.personalList.has(this.state.phoneNumber)) {
-                    this.showError = <Error errorName={"this person is existed.Please enter again !!!"}/>;
+                    showError= <Error errorName={"this person is existed.Please enter again !!!"}/>;
+
+                    this.setState({showError: showError});
                 } else {
                     this.personalList.set(this.state.phoneNumber, this.state);
-                    this.showError = <Error errorName={"Add Successful!!!"}/>;
-                    this.setState(this.getInitialState());
+                    showError= <Error errorName={"Add Successful!!!"}/>;
+                    this.addPerson();
+                    this.setState({showError: showError});
                 }
             }
         }
     }
 
-    addPerson(event) {
-        event.preventDefault();
+    addPerson() {
+        // event.preventDefault();
         this.setState({});
-        this.arrPersonal = [];
+        let arrPersonal = [];
         this.isShowTable = true;
 
         this.personalList.forEach((val, key) => {
-            this.arrPersonal.push(val)
+            arrPersonal.push(val)
         });
 
-        this.arrPersonal.sort((a, b) => a.Age - b.Age);
+        arrPersonal.sort((a, b) => a.Age - b.Age);
+        this.setState({arrPersonal: arrPersonal});
     }
 
     delPerson(phoneNumber) {
-        this.arrPersonal = this.arrPersonal.filter(person => {
+        let arrPersonal = this.state.arrPersonal.filter(person => {
             return person.phoneNumber !== phoneNumber;
         });
 
@@ -98,7 +102,7 @@ class Personal extends React.Component {
             this.personalList.delete(phoneNumber);
         }
 
-        this.setState({});
+        this.setState({arrPersonal: arrPersonal});
     }
 
     editPerson(phoneNumber) {
@@ -119,7 +123,7 @@ class Personal extends React.Component {
         return (
             <section>
                 <header><h4>I.PERSIONAL INFORMATION</h4></header>
-                {this.showError}
+                {this.state.showError}
                 <article>
                     <form onSubmit={this.handleSubmit.bind(this)}>
                         <table>
@@ -193,17 +197,17 @@ class Personal extends React.Component {
                             <tr>
                                 <td>
                                     <input type="submit" value="Submit"/>
-                                    <input type="button" value="Update" onClick={this.addPerson.bind(this)}/>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </form>
                 </article>
-                <br/>
-                <br/>
+
+                <br/><br/>
+
                 {console.log(1234)}
-                <Table personal={this.arrPersonal} showInfo={this.isShowTable}
+                <Table personal={this.state.arrPersonal} showInfo={this.isShowTable}
                        delPerson={this.delPerson.bind(this)} editPerson={this.editPerson.bind(this)}/>
             </section>
         )
