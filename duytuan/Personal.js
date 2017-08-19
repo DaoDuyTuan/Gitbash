@@ -21,7 +21,7 @@ class Personal extends React.Component {
             email: '',
             isEdit: false,
             showError: null,
-            arrPersonal:[]
+            arrPersonal: []
         };
     };
 
@@ -39,19 +39,21 @@ class Personal extends React.Component {
         this.setState({});
         let showError = '';
 
-        for (let ind in this.state) {
-            if ((typeof this.state[ind] === 'string' && this.state[ind].trim() === '') ||
-                (ind === 'Age' && isNaN(this.state[ind]))) {
+        for (let item in this.state) {
+            if ((typeof this.state[item] === 'string' && this.state[item].trim() === '') ||
+                (item === 'Age' && isNaN(this.state[item]))) {
 
-                showError = <Error errorName={`${ind} is empty`}/>
+                showError = <Error errorName={`${item} is empty`}/>;
 
-                if (ind === "Age" && isNaN(this.state[ind])) {
-                    showError = <Error errorName={`${ind} is not number!!`}/>
+                if (item === "Age" && isNaN(this.state[item])) {
+                    showError = <Error errorName={`${item} is not number!!`}/>
                 }
 
-                if (ind !== "Gender") {
-                    this.refs[ind].focus();
+                if (item !== "Gender") {
+                    this.refs[item].focus();
                 }
+
+                // this.deleteError();
                 this.setState({showError: showError});
                 return false;
             }
@@ -60,18 +62,18 @@ class Personal extends React.Component {
         if (showError === '') {
             if (this.state.isEdit) {
                 this.personalList.set(this.state.phoneNumber, this.state);
-                showError= <Error errorName={"Update successful !"}/>;
+                //showError = <Error errorName={"Update successful !"}/>;
                 this.addPerson();
 
                 this.setState({showError: showError});
             } else {
                 if (this.personalList.has(this.state.phoneNumber)) {
-                    showError= <Error errorName={"this person is existed.Please enter again !!!"}/>;
+                    showError = <Error errorName={"this person is existed.Please enter again !!!"}/>;
 
                     this.setState({showError: showError});
                 } else {
                     this.personalList.set(this.state.phoneNumber, this.state);
-                    showError= <Error errorName={"Add Successful!!!"}/>;
+                    //showError = <Error errorName={"Add Successful!!!"}/>;
                     this.addPerson();
                     this.setState({showError: showError});
                 }
@@ -79,9 +81,17 @@ class Personal extends React.Component {
         }
     }
 
+    // deleteError(){
+    //     let eleDom = document.getElementById('hideMe').textContent;
+    //     alert(eleDom);
+    //     setTimeout(function(){
+    //         eleDom.style.display = 'none'
+    //     },3000);
+    // }
+
     addPerson() {
-        // event.preventDefault();
         this.setState({});
+
         let arrPersonal = [];
         this.isShowTable = true;
 
@@ -105,6 +115,7 @@ class Personal extends React.Component {
         this.setState({arrPersonal: arrPersonal});
     }
 
+
     editPerson(phoneNumber) {
         const personal = this.personalList.get(phoneNumber);
         this.setState({
@@ -123,8 +134,8 @@ class Personal extends React.Component {
         return (
             <section>
                 <header><h4>I.PERSIONAL INFORMATION</h4></header>
-                {this.state.showError}
                 <article>
+                    {this.state.showError}
                     <form onSubmit={this.handleSubmit.bind(this)}>
                         <table>
                             <tbody>

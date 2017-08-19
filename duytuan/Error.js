@@ -1,7 +1,8 @@
 import React from 'react';
+
 function Error(props) {
     return (
-        <span className="error">{props.errorName}</span>
+        <span className="error" id="hideMe">{props.errorName}</span>
     )
 }
 
