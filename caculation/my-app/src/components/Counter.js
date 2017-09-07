@@ -3,7 +3,7 @@ import showResult from '../reducers/index';
 import ReactDOM from 'react-dom';
 import {createStore} from 'redux';
 import {connect} from 'react-redux';
-import App from "../App";
+import App from "../../../src/App";
 
 const store = createStore(
     showResult,
