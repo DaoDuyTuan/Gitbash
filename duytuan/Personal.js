@@ -130,9 +130,9 @@ class Personal extends React.Component {
 
     render() {
         return (
-            <section>
-                <header><h4>I.PERSIONAL INFORMATION</h4></header>
-                <article>
+            <div>
+                <div><h4>I.PERSIONAL INFORMATION</h4></div>
+                <div>
                     {this.state.showError}
                     <form>
                         <table>
@@ -212,7 +212,6 @@ class Personal extends React.Component {
                                     <div id="emailError"/>
                                 </td>
 
-
                             </tr>
                             <tr>
                                 <td>
@@ -222,13 +221,13 @@ class Personal extends React.Component {
                             </tbody>
                         </table>
                     </form>
-                </article>
+                </div>
 
                 <br/><br/>
 
                 <Table personal={this.state.arrPersonal} showInfo={this.isShowTable}
                        delPerson={this.delPerson.bind(this)} editPerson={this.editPerson.bind(this)}/>
-            </section>
+            </div>
         )
     }
 }
