@@ -9,14 +9,12 @@ import { connect } from 'react-redux';
 const todo = (state, action) => {
     switch (action.type) {
         case 'ADD_TODO':
-            if (action.text !== '') {
                 return {
                     id: action.id,
                     text: action.text,
                     completed: false
-                };
-            }
-            return state;
+            };
+
         case 'TOGGLE_TODO':
             if (state.id !== action.id) {
                 return state;
@@ -75,7 +73,14 @@ class FilterLink extends React.Component {
         const {store} = this.context;
         const state = store.getState();
 
+        console.log(state);
+        const list = (
+            <div>
+                {state.todos.map(todo => console.log(todo.text))}
+            </div>
+        );
         return (
+
             <Link active={this.props.filter === state.visibilityFilter}
                   onClick={() => store.dispatch({type: 'SET_VISIBILITY_FILTER', filter: this.props.filter})}>
                 {this.props.children}
@@ -151,7 +156,7 @@ let AddTodo = ({dispatch}) => {
     )
 };
 
-AddTodo = connect(null,null)(AddTodo);
+AddTodo = connect()(AddTodo);
 
 const getVisibleTodos = (todos, filter) => {
     switch (filter) {
@@ -197,7 +202,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onTodoClick: id => dispatch({type: 'TOGGLE_TODO'}, id)
+        onTodoClick: id => dispatch({ type: 'TOGGLE_TODO' }, id)
     };
 };
 

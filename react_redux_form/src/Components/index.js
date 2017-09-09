@@ -1,5 +1,5 @@
 import {CurriculumVitaeApp} from './CurriculumVitae';
-import { showTable } from "../Reducers/showTable";
+import { Table } from "../Reducers/showTable";
 import React from 'react';
 
 export default class App extends React.Component{
@@ -7,7 +7,7 @@ export default class App extends React.Component{
         return (
             <div>
                 <CurriculumVitaeApp />
-                <showTable />
+                <Table />
             </div>
         )
     }

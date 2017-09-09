@@ -81,7 +81,8 @@ export default class CurriculumVitae extends React.Component {
                         </tr>
                         <tr>
                             <td>
-                                <button onClick={() => {
+                                <button onClick={(e) => {
+                                    e.preventDefault();
                                     dispatch({
                                        type: 'ADD_PERSON',
                                        fullName: this.fullName.value,
@@ -92,6 +93,8 @@ export default class CurriculumVitae extends React.Component {
                                        email: this.email.value,
                                        id: increPerson++
                                     });
+                                    this.fullName.value = this.Age.value = this.DOB.value =
+                                    this.phoneNumber.value = this.workPlace.value = this.email.value = '';
                                 }}> submit </button>
                             </td>
                         </tr>
